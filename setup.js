@@ -17,7 +17,7 @@ const webpwd = generateRandomString(16);
 app.get("/:pwd/", (req, res) => {
   if (req.params.pwd == webpwd) {
     //send setup/start.html
-    res.sendFile(__dirname + "/setup/start.html");
+    res.sendFile(__dirname + "/setup/template.html");
   } else {
     //error code
     res.status(401).send("Unauthorized");
