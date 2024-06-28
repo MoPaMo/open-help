@@ -2,7 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 const process = require("process");
 const express = require("express");
 const crypto = require("crypto");
-const Mustache = require("mustache");
+const Handlebars = require("handlebars");
 const fs = require("fs");
 const app = express();
 const port = 3000;
@@ -15,14 +15,20 @@ function generateRandomString(length) {
 app.use(express.static("public"));
 const webpwd = generateRandomString(16);
 const template = fs.readFileSync(__dirname + "/setup/template.html", "utf8");
+const renderedTemplate = Handlebars.compile(template);
 app.get("/:pwd/", (req, res) => {
   if (req.params.pwd == webpwd) {
     //send setup/start.html
-    let renderedTemplate = Mustache.render(template, {
-      Title: "Start",
-      Context: "This webapp will guide you through the setup of OpenHelp",
-    });
-    res.send(renderedTemplate);
+
+    res.send(
+      renderedTemplate({
+        Title: "Start",
+        Context: "This webapp will guide you through the setup of OpenHelp",
+        next: "start",
+        pwd: webpwd,
+        proceed: true,
+      })
+    );
   } else {
     //error code
     res.status(401).send("Unauthorized");
