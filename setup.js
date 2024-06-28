@@ -2,6 +2,7 @@ const sqlite3 = require("sqlite3").verbose();
 const process = require("process");
 const express = require("express");
 const crypto = require("crypto");
+const Mustache = require("mustache");
 
 const app = express();
 const port = 3000;
@@ -15,7 +16,8 @@ app.use(express.static("public"));
 const webpwd = generateRandomString(16);
 app.get("/:pwd/", (req, res) => {
   if (req.params.pwd == webpwd) {
-    res.send("OK");
+    //send setup/start.html
+    res.sendFile(__dirname + "/setup/start.html");
   } else {
     //error code
     res.status(401).send("Unauthorized");
