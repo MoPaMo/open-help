@@ -82,7 +82,27 @@ app.get("/:pwd/step2", (req, res) => {
       renderedTemplate({
         Title: "Table creation",
         Context: "We have created a database with the admin password: " + pwd,
-        next: "step3",
+        next: "finish",
+        pwd: webpwd,
+      })
+    );
+  } else {
+    //error code
+    res.status(401).send("Unauthorized");
+  }
+});
+
+app.get("/:pwd/finish", (req, res) => {
+  if (req.params.pwd == webpwd) {
+    //send setup/start.html
+
+    res.send(
+      renderedTemplate({
+        Title: "Setup finished",
+        Context: `You have finished the setup. You can now login with the admin password: ${webpwd} . <br/>
+        
+          You can start the app by running npm start in the root folder.`,
+        next: false,
         pwd: webpwd,
       })
     );
