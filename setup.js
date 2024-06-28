@@ -17,12 +17,13 @@ app.get("/:pwd/", (req, res) => {
   if (req.params.pwd == webpwd) {
     res.send("OK");
   } else {
-    res.send("Invalid password");
+    //error code
+    res.status(401).send("Unauthorized");
   }
 });
 app.get("/:pwd/start", (req, res) => res.send("Hello World!"));
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}/${webpwd}`);
+  console.log(`Setup is running at http://localhost:${port}/${webpwd}`);
 });
 
 const dbFile = "./db.sqlite3";
