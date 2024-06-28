@@ -28,7 +28,6 @@ app.get("/:pwd/", (req, res) => {
           "This webapp will guide you through the setup of OpenHelp <br> In the first step, we will create a database file. This will delete any db.sqlite3 file already existing!",
         next: "step1",
         pwd: webpwd,
-        proceed: true,
       })
     );
   } else {
@@ -54,7 +53,6 @@ app.get("/:pwd/step1", (req, res) => {
         Context: "",
         next: "step2",
         pwd: webpwd,
-        proceed: true,
       })
     );
   } else {
@@ -86,7 +84,6 @@ app.get("/:pwd/step2", (req, res) => {
         Context: "We have created a database with the admin password: " + pwd,
         next: "step3",
         pwd: webpwd,
-        proceed: true,
       })
     );
   } else {
