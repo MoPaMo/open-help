@@ -12,6 +12,7 @@ function generateRandomString(length) {
     .toString("hex")
     .slice(0, length);
 }
+const dbFile = "./db.sqlite3";
 app.use(express.static("public"));
 const webpwd = generateRandomString(16);
 const template = fs.readFileSync(__dirname + "/setup/template.html", "utf8");
@@ -23,8 +24,9 @@ app.get("/:pwd/", (req, res) => {
     res.send(
       renderedTemplate({
         Title: "Start",
-        Context: "This webapp will guide you through the setup of OpenHelp",
-        next: "start",
+        Context:
+          "This webapp will guide you through the setup of OpenHelp <br> In the first step, we will create a database file. This will delete any db.sqlite3 file already existing!",
+        next: "step1",
         pwd: webpwd,
         proceed: true,
       })
@@ -34,33 +36,64 @@ app.get("/:pwd/", (req, res) => {
     res.status(401).send("Unauthorized");
   }
 });
-app.get("/:pwd/start", (req, res) => res.send("Hello World!"));
+app.get("/:pwd/step1", (req, res) => {
+  if (req.params.pwd == webpwd) {
+    //send setup/start.html
+    if (!fs.existsSync(dbFile)) {
+      //create file
+      fs.writeFileSync(dbFile, "");
+    } else {
+      console.log("Database file already exists.");
+      //delete file
+      fs.unlinkSync(dbFile);
+      console.log("Database file deleted.");
+    }
+    res.send(
+      renderedTemplate({
+        Title: "Database File Creation",
+        Context: "",
+        next: "step2",
+        pwd: webpwd,
+        proceed: true,
+      })
+    );
+  } else {
+    //error code
+    res.status(401).send("Unauthorized");
+  }
+});
+app.get("/:pwd/step2", (req, res) => {
+  if (req.params.pwd == webpwd) {
+    //send setup/start.html
+
+    const db = new sqlite3.Database(dbFile);
+    let pwd = generateRandomString(24);
+    db.serialize(() => {
+      db.run(
+        "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)"
+      );
+      db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
+        "admin",
+        pwd,
+      ]);
+    });
+    db.close();
+
+    console.log("Database created with admin password: " + pwd);
+    res.send(
+      renderedTemplate({
+        Title: "Table creation",
+        Context: "We have created a database with the admin password: " + pwd,
+        next: "step3",
+        pwd: webpwd,
+        proceed: true,
+      })
+    );
+  } else {
+    //error code
+    res.status(401).send("Unauthorized");
+  }
+});
 app.listen(port, () => {
   console.log(`Setup is running at http://localhost:${port}/${webpwd}`);
 });
-
-const dbFile = "./db.sqlite3";
-
-if (!fs.existsSync(dbFile)) {
-  console.error("Database file does not exist.");
-  //create file
-  fs.writeFileSync(dbFile, "");
-} else {
-  console.log("Database file already exists.");
-  //delete file
-  fs.unlinkSync(dbFile);
-  console.log("Database file deleted.");
-}
-const db = new sqlite3.Database(dbFile);
-let pwd = generateRandomString(24);
-db.serialize(() => {
-  db.run(
-    "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)"
-  );
-  db.run("INSERT INTO users (username, password) VALUES (?, ?)", [
-    "admin",
-    pwd,
-  ]);
-});
-console.log("Database created with admin password: " + pwd);
-db.close();
