@@ -3,12 +3,28 @@ const process = require("process");
 const express = require("express");
 const crypto = require("crypto");
 
+const app = express();
+const port = 3000;
 function generateRandomString(length) {
   return crypto
     .randomBytes(Math.ceil(length / 2))
     .toString("hex")
     .slice(0, length);
 }
+app.use(express.static("public"));
+const webpwd = generateRandomString(16);
+app.get("/:pwd/", (req, res) => {
+  if (req.params.pwd == webpwd) {
+    res.send("OK");
+  } else {
+    res.send("Invalid password");
+  }
+});
+app.get("/:pwd/start", (req, res) => res.send("Hello World!"));
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}/${webpwd}`);
+});
+
 const dbFile = "./db.sqlite3";
 const fs = require("fs");
 
