@@ -3,7 +3,7 @@ const process = require("process");
 const express = require("express");
 const crypto = require("crypto");
 const Mustache = require("mustache");
-
+const fs = require("fs");
 const app = express();
 const port = 3000;
 function generateRandomString(length) {
@@ -14,10 +14,15 @@ function generateRandomString(length) {
 }
 app.use(express.static("public"));
 const webpwd = generateRandomString(16);
+const template = fs.readFileSync(__dirname + "/setup/template.html", "utf8");
 app.get("/:pwd/", (req, res) => {
   if (req.params.pwd == webpwd) {
     //send setup/start.html
-    res.sendFile(__dirname + "/setup/template.html");
+    let renderedTemplate = Mustache.render(template, {
+      Title: "Start",
+      Context: "This webapp will guide you through the setup of OpenHelp",
+    });
+    res.send(renderedTemplate);
   } else {
     //error code
     res.status(401).send("Unauthorized");
@@ -29,7 +34,6 @@ app.listen(port, () => {
 });
 
 const dbFile = "./db.sqlite3";
-const fs = require("fs");
 
 if (!fs.existsSync(dbFile)) {
   console.error("Database file does not exist.");
