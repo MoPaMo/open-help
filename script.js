@@ -2,8 +2,6 @@ const express = require("express");
 const app = express();
 const port = 3000;
 
-const sqlite3 = require("sqlite3").verbose();
-
 const path = require("path");
 
 app.get("/", (req, res) => {
