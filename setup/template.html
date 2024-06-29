@@ -80,7 +80,7 @@
               <div class="card-body px-0 pb-2">
                 <div class="table-responsive p-0">
                   <div class="card">
-                    {{#ifEquals Context 'email'}}
+                    {{#if form}}
                     <div class="card-body">
                       <form action="/{{pwd}}/step4" method="post">
                         <h3>Sending Email Configuration</h3>
@@ -199,16 +199,13 @@
                         </button>
                       </form>
                     </div>
-
                     {{else}}
                     <div class="card-body">{{{Context}}}</div>
-
-                    {{/ifEquals}} {{#if next}} {{#ifEquals Context 'email'}}
-                    {{else}}
+                    {{#if next}}
                     <a href="/{{pwd}}/{{next}}" class="btn bg-gradient-primary"
                       >Next</a
                     >
-                    {{/ifEquals}} {{/if}}
+                    {{/if}} {{/if}}
                   </div>
                 </div>
               </div>

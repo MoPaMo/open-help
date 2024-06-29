@@ -150,6 +150,7 @@ app.get("/:pwd/step3", authMiddleware, (req, res) => {
         "<p>Ready to make OpenHelp communication-ready? Let's go!</p>",
       next: "finish",
       pwd: webpwd,
+      form: true,
     })
   );
 });
