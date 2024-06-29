@@ -127,11 +127,33 @@ app.get("/:pwd/step2", authMiddleware, (req, res) => {
           "<p><strong>Important:</strong> Please make sure to save this password in a secure location - you'll need it to access your OpenHelp admin panel.</p>" +
           "<p>Remember, keeping this password safe is crucial for the security of your instance.</p>" +
           "<p>Great job on completing this important step!</p>",
-        next: "step3",
+        next: "step2a",
         pwd: webpwd,
       })
     );
   });
+});
+
+// New step for generating and saving sessionKey
+app.get("/:pwd/step2a", authMiddleware, (req, res) => {
+  const sessionKey = generateRandomString(32);
+  process.env.SESSION_KEY = sessionKey;
+
+  // Save the session key to a .env file
+  fs.appendFileSync(".env", `\nSESSION_KEY=${sessionKey}`);
+
+  res.send(
+    renderedTemplate({
+      Title: "Session Key Generated",
+      Context:
+        "<p>🔑 Excellent! We've generated a secure session key for your cookies.</p>" +
+        "<p>This key will be used to sign and encrypt session cookies, adding an extra layer of security to your OpenHelp instance.</p>" +
+        "<p>The session key has been saved to your environment variables and added to your .env file for future use.</p>" +
+        "<p>You're making great progress in securing your OpenHelp setup!</p>",
+      next: "step3",
+      pwd: webpwd,
+    })
+  );
 });
 
 app.get("/:pwd/step3", authMiddleware, (req, res) => {
