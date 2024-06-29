@@ -87,7 +87,7 @@ app.get("/:pwd/step2", (req, res) => {
       renderedTemplate({
         Title: "Table creation",
         Context: "We have created a database with the admin password: " + pwd,
-        next: "finish",
+        next: "step3",
         pwd: webpwd,
       })
     );
