@@ -1,18 +1,64 @@
 const express = require("express");
+const sqlite3 = require("sqlite3").verbose();
+const bcrypt = require("bcryptjs");
+const session = require("express-session");
+const bodyParser = require("body-parser");
+const path = require("path");
+
 const app = express();
 const port = 3000;
-const sqlite = require("sqlite3");
-const process = require("process");
-const path = require("path");
-const { env } = require("process");
 
+// Database setup
+
+// Middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+app.use(
+  session({
+    secret: process.env.sessionKey,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false }, // Set to true in production with HTTPS
+  })
+);
+
+// Routes
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
 });
 
-// make all files under 'public' public
-app.use(express.static(path.join(__dirname, "public")));
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
 
+  db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
+    if (err) return res.status(500).send("Internal Server Error");
+    if (!user) return res.status(400).send("Invalid username or password");
+
+    bcrypt.compare(password, user.password, (err, result) => {
+      if (err) return res.status(500).send("Internal Server Error");
+      if (!result) return res.status(400).send("Invalid username or password");
+
+      req.session.userId = user.id;
+      res.send("Login successful");
+    });
+  });
+});
+
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) return res.status(500).send("Internal Server Error");
+    res.send("Logout successful");
+  });
+});
+
+function requireLogin(req, res, next) {
+  if (!req.session.userId) {
+    return res.status(401).send("Unauthorized");
+  }
+  next();
+}
+
+// Start server
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
