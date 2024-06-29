@@ -122,25 +122,50 @@ app.get("/:pwd/step3", (req, res) => {
 });
 app.post("/:pwd/step4", (req, res) => {
   if (req.params.pwd == webpwd) {
-    //check if all params are set
-    if (req.body.host && req.body.port && req.body.user && req.body.password) {
-      //save data to config file
-      fs.writeFileSync("./config.json", JSON.stringify({ send: req.body }));
-      console.log(req);
+    // Check if all required fields for sending and receiving emails are set
+    if (
+      req.body["send-host"] &&
+      req.body["send-port"] &&
+      req.body["send-user"] &&
+      req.body["send-password"] &&
+      req.body["receive-host"] &&
+      req.body["receive-port"] &&
+      req.body["receive-user"] &&
+      req.body["receive-password"]
+    ) {
+      // Save data to config file
+      const emailConfig = {
+        send: {
+          host: req.body["send-host"],
+          port: req.body["send-port"],
+          user: req.body["send-user"],
+          password: req.body["send-password"],
+        },
+        receive: {
+          host: req.body["receive-host"],
+          port: req.body["receive-port"],
+          user: req.body["receive-user"],
+          password: req.body["receive-password"],
+        },
+      };
+      fs.writeFileSync("./config.json", JSON.stringify(emailConfig, null, 2));
+      console.log("Email configuration saved.");
       res.send(
         renderedTemplate({
-          Title: "Email Setup",
-          Context: `<code>${JSON.stringify(req.body)}</code>`,
+          Title: "Email Setup Completed",
+          Context: "Your email configuration has been saved.",
           next: "finish",
           pwd: webpwd,
         })
       );
+    } else {
+      res.status(400).send("All fields are required.");
     }
   } else {
-    //error code
     res.status(401).send("Unauthorized");
   }
 });
+
 app.get("/:pwd/finish", (req, res) => {
   if (req.params.pwd == webpwd) {
     //send setup/start.html

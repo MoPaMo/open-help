@@ -83,56 +83,114 @@
                     {{#ifEquals Context 'email'}}
                     <div class="card-body">
                       <form action="/{{pwd}}/step4" method="post">
+                        <h3>Sending Email Configuration</h3>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Host</label>
+                          <label class="form-label">SMTP Host</label>
                           <input
                             type="url"
                             class="form-control"
-                            name="host"
+                            name="send-host"
                             required
                           />
                         </div>
                         <div class="row">
                           <div class="col-md-6">
                             <div class="input-group input-group-outline my-3">
-                              <label class="form-label">Port</label>
+                              <label class="form-label">SMTP Port</label>
                               <input
                                 type="number"
                                 class="form-control"
-                                name="port"
+                                name="send-port"
                                 required
                               />
                             </div>
                           </div>
                           <div class="col-md-6">
                             <div class="form-check form-switch">
-                              <label class="form-check-label" for="secure"
+                              <label class="form-check-label" for="send-secure"
                                 >Secure</label
                               >
                               <input
                                 class="form-check-input"
                                 type="checkbox"
-                                id="secure"
-                                name="secure"
+                                id="send-secure"
+                                name="send-secure"
                               />
                             </div>
                           </div>
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">User</label>
+                          <label class="form-label">SMTP User</label>
                           <input
                             type="email"
                             class="form-control"
-                            name="user"
+                            name="send-user"
                             required
                           />
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Password</label>
+                          <label class="form-label">SMTP Password</label>
                           <input
                             type="password"
                             class="form-control"
-                            name="password"
+                            name="send-password"
+                            required
+                          />
+                        </div>
+
+                        <h3>Receiving Email Configuration</h3>
+                        <div class="input-group input-group-outline my-3">
+                          <label class="form-label">IMAP/POP3 Host</label>
+                          <input
+                            type="url"
+                            class="form-control"
+                            name="receive-host"
+                            required
+                          />
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="input-group input-group-outline my-3">
+                              <label class="form-label">IMAP/POP3 Port</label>
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="receive-port"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check form-switch">
+                              <label
+                                class="form-check-label"
+                                for="receive-secure"
+                                >Secure</label
+                              >
+                              <input
+                                class="form-check-input"
+                                type="checkbox"
+                                id="receive-secure"
+                                name="receive-secure"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group input-group-outline my-3">
+                          <label class="form-label">IMAP/POP3 User</label>
+                          <input
+                            type="email"
+                            class="form-control"
+                            name="receive-user"
+                            required
+                          />
+                        </div>
+                        <div class="input-group input-group-outline my-3">
+                          <label class="form-label">IMAP/POP3 Password</label>
+                          <input
+                            type="password"
+                            class="form-control"
+                            name="receive-password"
                             required
                           />
                         </div>
