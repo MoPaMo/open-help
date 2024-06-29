@@ -115,13 +115,14 @@
                     <div class="card-body">{{{Context}}}</div>
 
                     {{/ifEquals}}
-                  </div>
+
                   {{#if next}}
                   {{#ifEquals Context 'email'}}
                   {{else}}
                   <a href="/{{pwd}}/{{next}}" class="btn bg-gradient-primary">Next</a> 
                   {{/ifEquals}}
                   {{/if}}
+                  </div>
                 </div>
               </div>
             </div>
