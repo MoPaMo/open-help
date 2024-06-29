@@ -124,7 +124,8 @@ app.post("/:pwd/step4", (req, res) => {
   if (req.params.pwd == webpwd) {
     //check if all params are set
     if (req.body.host && req.body.port && req.body.user && req.body.password) {
-      //for debug purposes just give all data
+      //save data to config file
+      fs.writeFileSync("./config.json", JSON.stringify({ send: req.body }));
       console.log(req);
       res.send(
         renderedTemplate({
