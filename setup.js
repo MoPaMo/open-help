@@ -123,18 +123,18 @@ app.get("/:pwd/step3", (req, res) => {
 app.post("/:pwd/step4", (req, res) => {
   if (req.params.pwd == webpwd) {
     //check if all params are set
-    //if (req.body.host && req.body.port && req.body.user && req.body.password) {
-    //for debug purposes just give all data
-    console.log(req);
-    res.send(
-      renderedTemplate({
-        Title: "Email Setup",
-        Context: `<code>${JSON.stringify(req.body)}</code>`,
-        next: "finish",
-        pwd: webpwd,
-      })
-    );
-    //}
+    if (req.body.host && req.body.port && req.body.user && req.body.password) {
+      //for debug purposes just give all data
+      console.log(req);
+      res.send(
+        renderedTemplate({
+          Title: "Email Setup",
+          Context: `<code>${JSON.stringify(req.body)}</code>`,
+          next: "finish",
+          pwd: webpwd,
+        })
+      );
+    }
   } else {
     //error code
     res.status(401).send("Unauthorized");

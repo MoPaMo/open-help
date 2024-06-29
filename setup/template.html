@@ -85,7 +85,12 @@
                       <form action="/{{pwd}}/step4" method="post">
                         <div class="input-group input-group-outline my-3">
                           <label class="form-label">Host</label>
-                          <input type="url" class="form-control" name="host" />
+                          <input
+                            type="url"
+                            class="form-control"
+                            name="host"
+                            required
+                          />
                         </div>
                         <div class="row">
                           <div class="col-md-6">
@@ -95,6 +100,7 @@
                                 type="number"
                                 class="form-control"
                                 name="port"
+                                required
                               />
                             </div>
                           </div>
@@ -118,6 +124,7 @@
                             type="email"
                             class="form-control"
                             name="user"
+                            required
                           />
                         </div>
                         <div class="input-group input-group-outline my-3">
@@ -126,6 +133,7 @@
                             type="password"
                             class="form-control"
                             name="password"
+                            required
                           />
                         </div>
                         <button type="submit" class="btn bg-gradient-primary">
