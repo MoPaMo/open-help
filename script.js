@@ -1,6 +1,6 @@
 const express = require("express");
 const sqlite3 = require("sqlite3").verbose();
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
@@ -16,7 +16,7 @@ try {
   db = new sqlite3.Database("./db.sqlite3");
 } catch (err) {
   console.error(err.message);
-  console.log("Did you forget to run setup.js?")
+  console.log("Did you forget to run setup.js?");
   process.exit(1); // Exit process with failure
 }
 
@@ -54,7 +54,7 @@ app.post("/login", (req, res) => {
       if (!result) return res.status(400).send("Invalid username or password");
 
       req.session.userId = user.id;
-      const redirectTo = req.session.returnTo || '/';
+      const redirectTo = req.session.returnTo || "/";
       delete req.session.returnTo;
       res.redirect(redirectTo);
     });
