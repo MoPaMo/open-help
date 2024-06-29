@@ -15,7 +15,7 @@ function generateRandomString(length) {
 }
 
 const dbFile = "./db.sqlite3";
-let webpwd;
+let webpwd, pwd;
 app.use(express.static("public"));
 if (process.argv.includes("dev")) {
   webpwd = "dev";
@@ -76,7 +76,7 @@ app.get("/:pwd/step2", (req, res) => {
     //send setup/start.html
 
     const db = new sqlite3.Database(dbFile);
-    let pwd = generateRandomString(24);
+    pwd = generateRandomString(24);
     db.serialize(() => {
       db.run(
         "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)"
@@ -145,7 +145,7 @@ app.get("/:pwd/finish", (req, res) => {
     res.send(
       renderedTemplate({
         Title: "Setup finished",
-        Context: `You have finished the setup. You can now login with the admin password: ${webpwd} . <br/>
+        Context: `You have finished the setup. You can now login with the admin password: <code>${pwd}</code>. <br/>
         
           You can start the app by running npm start in the root folder.`,
         next: false,
