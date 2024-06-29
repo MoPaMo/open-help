@@ -1,0 +1,22 @@
+{
+  "name": "openhelp",
+  "version": "1.0.0",
+  "description": "An open-source support platform with AI integrations",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js dev",
+    "setup": "node setup.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "sqlite3": "^5.0.2",
+    "bcrypt": "^5.0.1",
+    "express-session": "^1.17.2",
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "helmet": "^4.6.0",
+    "handlebars": "^4.7.7",
+    "nodemailer": "^6.6.3"
+  }
+}
