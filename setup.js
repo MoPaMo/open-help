@@ -15,7 +15,11 @@ function generateRandomString(length) {
 }
 const dbFile = "./db.sqlite3";
 app.use(express.static("public"));
-const webpwd = generateRandomString(16);
+if (!process.argv.includes("dev")) {
+  const webpwd = generateRandomString(16);
+} else {
+  const webpwd = "dev";
+}
 const template = fs.readFileSync(__dirname + "/setup/template.html", "utf8");
 const renderedTemplate = Handlebars.compile(template);
 Handlebars.registerHelper("ifEquals", function (arg1, arg2, options) {
