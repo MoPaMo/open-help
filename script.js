@@ -9,7 +9,14 @@ const app = express();
 const port = 3000;
 
 // Database setup
-const db = new sqlite3.Database("./db.sqlite3");
+let db;
+try {
+  db = new sqlite3.Database("./db.sqlite3");
+} catch (err) {
+  console.error(err.message);
+  console.log("Did you forget to run setup.js?")
+  process.exit(1); // Exit process with failure
+}
 
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
