@@ -30,20 +30,75 @@
     >
       <div class="sidenav-header">
         <a class="navbar-brand m-0" href="#">
-          <span class="ms-1 font-weight-bold text-white">Setup Steps</span>
+          <span class="ms-1 font-weight-bold text-white">Setup Progress</span>
         </a>
       </div>
       <hr class="horizontal light mt-0 mb-2" />
       <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link text-white active" href="#">
+            <a
+              class="nav-link text-white {{#ifEquals next 'step1'}}active{{/ifEquals}}"
+              href="#"
+            >
               <div
                 class="text-white text-center me-2 d-flex align-items-center justify-content-center"
               >
-                <i class="material-icons opacity-10">dashboard</i>
+                <i class="material-icons opacity-10">home</i>
               </div>
               <span class="nav-link-text ms-1">Start</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link text-white {{#ifEquals next 'step2'}}active{{/ifEquals}}"
+              href="#"
+            >
+              <div
+                class="text-white text-center me-2 d-flex align-items-center justify-content-center"
+              >
+                <i class="material-icons opacity-10">storage</i>
+              </div>
+              <span class="nav-link-text ms-1">Database Creation</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link text-white {{#ifEquals next 'step3'}}active{{/ifEquals}}"
+              href="#"
+            >
+              <div
+                class="text-white text-center me-2 d-flex align-items-center justify-content-center"
+              >
+                <i class="material-icons opacity-10">person</i>
+              </div>
+              <span class="nav-link-text ms-1">Admin Account</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link text-white {{#ifEquals next 'step4'}}active{{/ifEquals}}"
+              href="#"
+            >
+              <div
+                class="text-white text-center me-2 d-flex align-items-center justify-content-center"
+              >
+                <i class="material-icons opacity-10">email</i>
+              </div>
+              <span class="nav-link-text ms-1">Email Configuration</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link text-white {{#ifEquals next 'finish'}}active{{/ifEquals}}"
+              href="#"
+            >
+              <div
+                class="text-white text-center me-2 d-flex align-items-center justify-content-center"
+              >
+                <i class="material-icons opacity-10">check_circle</i>
+              </div>
+              <span class="nav-link-text ms-1">Finish</span>
             </a>
           </li>
         </ul>
