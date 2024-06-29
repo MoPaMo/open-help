@@ -45,7 +45,9 @@ app.post("/login", (req, res) => {
       if (!result) return res.status(400).send("Invalid username or password");
 
       req.session.userId = user.id;
-      res.send("Login successful");
+      const redirectTo = req.session.returnTo || '/';
+      delete req.session.returnTo;
+      res.redirect(redirectTo);
     });
   });
 });
@@ -60,6 +62,7 @@ app.get("/logout", (req, res) => {
 // Middleware to require login
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
+    req.session.returnTo = req.originalUrl;
     return res.redirect("/sign-in");
   }
   next();
