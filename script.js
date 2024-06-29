@@ -7,7 +7,9 @@ const path = require("path");
 const dotenv = require("dotenv").config();
 const helmet = require("helmet");
 const app = express();
-app.use(helmet());
+if (!process.argv.includes("dev")) {
+  app.use(helmet());
+}
 
 const port = 3000;
 
