@@ -4,8 +4,10 @@ const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
-
+const helmet = require("helmet");
 const app = express();
+app.use(helmet());
+
 const port = 3000;
 
 // Database setup
