@@ -10,6 +10,7 @@ const port = 3000;
 
 // Database setup
 const db = new sqlite3.Database("./db.sqlite3");
+
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
@@ -25,6 +26,11 @@ app.use(
 // Routes
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/index.html");
+});
+
+// Add a route to serve the sign-in page
+app.get("/sign-in", (req, res) => {
+  res.sendFile(path.join(__dirname, "pages", "sign-in.html"));
 });
 
 app.post("/login", (req, res) => {
