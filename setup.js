@@ -47,9 +47,9 @@ app.use(express.static("public"));
 app.get("/:pwd/", authMiddleware, (req, res) => {
   res.send(
     renderedTemplate({
-      Title: "Start",
+      Title: "Welcome to OpenHelp Setup!",
       Context:
-        "This webapp will guide you through the setup of OpenHelp <br> In the first step, we will create a database file. This will delete any db.sqlite3 file already existing!",
+        "🚀 Welcome to the OpenHelp setup wizard! We're excited to guide you through the process of setting up your very own instance. This user-friendly webapp will walk you through each step, ensuring a smooth and hassle-free setup experience. Let's get started by creating a fresh database for your OpenHelp installation. Don't worry if you have an existing db.sqlite3 file - we'll take care of that for you. Ready to begin this exciting journey? Let's go!",
       next: "step1",
       pwd: webpwd,
     })
@@ -74,8 +74,9 @@ app.get("/:pwd/step1", authMiddleware, (req, res) => {
   }
   res.send(
     renderedTemplate({
-      Title: "Database File Creation",
-      Context: "",
+      Title: "Database Creation - Success!",
+      Context:
+        "🎉 Great news! We've successfully created a fresh database file for your OpenHelp instance. This is where all your important data will be stored securely. We've taken care of any existing files to ensure a clean slate for your new setup. You're making excellent progress - let's move on to the next exciting step!",
       next: "step2",
       pwd: webpwd,
     })
@@ -114,8 +115,8 @@ app.get("/:pwd/step2", authMiddleware, (req, res) => {
     console.log("Database created with admin password: " + pwd);
     res.send(
       renderedTemplate({
-        Title: "Table creation",
-        Context: `We have created a database with the admin password <code>${pwd}</code>.`,
+        Title: "Admin Account Created",
+        Context: `🔐 Fantastic! We've set up your database and created an admin account to get you started. Your unique admin password is: <code>${pwd}</code>. Please make sure to save this password in a secure location - you'll need it to access your OpenHelp admin panel. Remember, keeping this password safe is crucial for the security of your instance. Great job on completing this important step!`,
         next: "step3",
         pwd: webpwd,
       })
@@ -126,8 +127,9 @@ app.get("/:pwd/step2", authMiddleware, (req, res) => {
 app.get("/:pwd/step3", authMiddleware, (req, res) => {
   res.send(
     renderedTemplate({
-      Title: "Email Setup",
-      Context: "email",
+      Title: "Email Configuration",
+      Context:
+        "📧 Now, let's set up your email configuration. This is an important step that will allow OpenHelp to send and receive emails, enabling smooth communication with your users. You'll need to provide details for both sending and receiving emails. Don't worry if you don't have this information handy - you can always update it later. Ready to make OpenHelp communication-ready? Let's go!",
       next: "finish",
       pwd: webpwd,
     })
@@ -176,8 +178,9 @@ app.post("/:pwd/step4", authMiddleware, (req, res) => {
       console.log("Email configuration saved.");
       res.send(
         renderedTemplate({
-          Title: "Email Setup Completed",
-          Context: "Your email configuration has been saved.",
+          Title: "Email Setup Complete",
+          Context:
+            "✉️ Excellent work! Your email configuration has been successfully saved. OpenHelp is now ready to handle all your email communications seamlessly. This setup will ensure that your instance can send notifications, receive inquiries, and manage all email-related tasks efficiently. You're almost at the finish line - let's wrap this up!",
           next: "finish",
           pwd: webpwd,
         })
@@ -193,8 +196,14 @@ app.post("/:pwd/step4", authMiddleware, (req, res) => {
 app.get("/:pwd/finish", authMiddleware, (req, res) => {
   res.send(
     renderedTemplate({
-      Title: "Setup finished",
-      Context: `You have finished the setup. You can now login with the admin password: <code>${pwd}</code>. <br/> You can start the app by running npm start in the root folder.`,
+      Title: "Setup Complete - Congratulations!",
+      Context: `🎊 Congratulations! You've successfully completed the OpenHelp setup process. Your instance is now ready to go! Here's a quick recap:
+
+      1. Your database has been created and initialized.
+      2. An admin account is set up with the password: <code>${pwd}</code>
+      3. Email configurations have been saved.
+
+      To start your OpenHelp instance, simply run 'npm start' in the root folder. We're excited for you to explore all the fantastic features OpenHelp has to offer. If you need any assistance, don't hesitate to consult our documentation or reach out to our support team. Happy helping!`,
       next: false,
       pwd: webpwd,
     })
@@ -202,5 +211,7 @@ app.get("/:pwd/finish", authMiddleware, (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Setup is running at http://localhost:${port}/${webpwd}`);
+  console.log(
+    `🌟 OpenHelp Setup is running at http://localhost:${port}/${webpwd}`
+  );
 });
