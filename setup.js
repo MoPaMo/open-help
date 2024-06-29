@@ -138,16 +138,7 @@ app.get("/:pwd/step3", authMiddleware, (req, res) => {
   res.send(
     renderedTemplate({
       Title: "Email Configuration",
-      Context:
-        "<p>📧 Now, let's set up your email configuration. This is an important step that will allow OpenHelp to send and receive emails, enabling smooth communication with your users.</p>" +
-        "<p>You'll need to provide details for both sending and receiving emails. Here's what you'll need:</p>" +
-        "<ul>" +
-        "  <li>SMTP server details for sending emails</li>" +
-        "  <li>IMAP server details for receiving emails</li>" +
-        "  <li>Usernames and passwords for both servers</li>" +
-        "</ul>" +
-        "<p><strong>Note:</strong> Don't worry if you don't have this information handy - you can always update it later.</p>" +
-        "<p>Ready to make OpenHelp communication-ready? Let's go!</p>",
+      Context: "",
       next: "finish",
       pwd: webpwd,
       form: true,
