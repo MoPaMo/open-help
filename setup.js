@@ -13,12 +13,14 @@ function generateRandomString(length) {
     .toString("hex")
     .slice(0, length);
 }
+
 const dbFile = "./db.sqlite3";
+let webpwd;
 app.use(express.static("public"));
-if (!process.argv.includes("dev")) {
-  const webpwd = generateRandomString(16);
+if (process.argv.includes("dev")) {
+  webpwd = "dev";
 } else {
-  const webpwd = "dev";
+  webpwd = generateRandomString(16);
 }
 const template = fs.readFileSync(__dirname + "/setup/template.html", "utf8");
 const renderedTemplate = Handlebars.compile(template);
@@ -111,6 +113,26 @@ app.get("/:pwd/step3", (req, res) => {
         pwd: webpwd,
       })
     );
+  } else {
+    //error code
+    res.status(401).send("Unauthorized");
+  }
+});
+app.post("/:pwd/step4", (req, res) => {
+  if (req.params.pwd == webpwd) {
+    //check if all params are set
+    //if (req.body.host && req.body.port && req.body.user && req.body.password) {
+    //for debug purposes just give all data
+
+    res.send(
+      renderedTemplate({
+        Title: "Email Setup",
+        Context: `<code>${JSON.stringify(req.body)}</code>`,
+        next: "finish",
+        pwd: webpwd,
+      })
+    );
+    //}
   } else {
     //error code
     res.status(401).send("Unauthorized");
