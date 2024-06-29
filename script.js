@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const session = require("express-session");
 const bodyParser = require("body-parser");
 const path = require("path");
+const dotenv = require("dotenv").config();
 const helmet = require("helmet");
 const app = express();
 app.use(helmet());
