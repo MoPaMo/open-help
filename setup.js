@@ -139,7 +139,7 @@ app.get("/:pwd/step3", authMiddleware, (req, res) => {
     renderedTemplate({
       Title: "Email Configuration",
       Context: "",
-      next: "finish",
+      next: "step4",
       pwd: webpwd,
       form: true,
     })
