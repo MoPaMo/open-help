@@ -84,17 +84,31 @@
                     <div class="card-body">
                       <form>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Im</label>
-                          <input type="text" class="form-control" />
+                          <label class="form-label">Host</label>
+                          <input type="url" class="form-control" />
+                        </div>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <div class="input-group input-group-outline my-3">
+                              <label class="form-label">Port</label>
+                              <input type="number" class="form-control" />
+                            </div>
+                          </div>
+                          <div class="col-md-6">
+                            <div class="form-check form-switch">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Secure</label>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                              </div>
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Text</label>
-                          <input type="text" class="form-control" />
+                          <label class="form-label">User</label>
+                          <input type="email" class="form-control" />
                         </div>
                         <div class="input-group input-group-outline my-3">
-                          <label class="form-label">Text</label>
-                          <input type="text" class="form-control" />
+                          <label class="form-label">Password</label>
+                          <input type="password" class="form-control" />
                         </div>
+                        <button type="submit" class="btn bg-gradient-primary">Next</button>
                       </form>
                     </div>
                     {{else}}
@@ -102,7 +116,12 @@
 
                     {{/ifEquals}}
                   </div>
-                  {{#if next}}<a href="/{{pwd}}/{{next}}">Next</a> {{/if}}
+                  {{#if next}}
+                  {{#ifEquals Context 'email'}}
+                  {{else}}
+                  <a href="/{{pwd}}/{{next}}" class="btn bg-gradient-primary">Next</a> 
+                  {{/ifEquals}}
+                  {{/if}}
                 </div>
               </div>
             </div>
