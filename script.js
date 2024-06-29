@@ -9,7 +9,7 @@ const app = express();
 const port = 3000;
 
 // Database setup
-
+const db = new sqlite3.Database("./db.sqlite3");
 // Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
