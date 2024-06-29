@@ -6,6 +6,8 @@ const Handlebars = require("handlebars");
 const fs = require("fs");
 const nodemailer = require("nodemailer");
 const app = express();
+app.use(express.urlencoded({ extended: true }));
+
 const port = 3000;
 function generateRandomString(length) {
   return crypto
@@ -123,7 +125,7 @@ app.post("/:pwd/step4", (req, res) => {
     //check if all params are set
     //if (req.body.host && req.body.port && req.body.user && req.body.password) {
     //for debug purposes just give all data
-
+    console.log(req);
     res.send(
       renderedTemplate({
         Title: "Email Setup",
