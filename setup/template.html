@@ -8,21 +8,29 @@
     />
     <title>Setup</title>
     <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"
+      as="style"
+    />
+    <link
       rel="stylesheet"
-      type="text/css"
       href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700"
     />
     <link
+      rel="preload"
       href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
+      as="style"
+    />
+    <link
       rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"
     />
     <link
       id="pagestyle"
-      href="../assets/css/material-dashboard.css?v=3.1.0"
+      href="../assets/css/material-dashboard.min.css?v=3.1.0"
       rel="stylesheet"
     />
   </head>
-
   <body class="g-sidenav-show bg-gray-200">
     <aside
       class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark"
@@ -197,7 +205,6 @@
                             required
                           />
                         </div>
-
                         <h3>Receiving Email Configuration</h3>
                         <div class="input-group input-group-outline my-3">
                           <label class="form-label">IMAP/POP3 Host</label>
@@ -291,10 +298,10 @@
         </footer>
       </div>
     </main>
-    <script src="../assets/js/core/popper.min.js"></script>
-    <script src="../assets/js/core/bootstrap.min.js"></script>
-    <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
-    <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    <script src="../assets/js/core/popper.min.js" defer></script>
+    <script src="../assets/js/core/bootstrap.min.js" defer></script>
+    <script src="../assets/js/plugins/perfect-scrollbar.min.js" defer></script>
+    <script src="../assets/js/plugins/smooth-scrollbar.min.js" defer></script>
+    <script src="../assets/js/material-dashboard.min.js?v=3.1.0" defer></script>
   </body>
 </html>
