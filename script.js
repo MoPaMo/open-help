@@ -25,7 +25,7 @@ app.use(
 
 // Routes
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // Add a route to serve the sign-in page
@@ -57,12 +57,18 @@ app.get("/logout", (req, res) => {
   });
 });
 
+// Middleware to require login
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
-    return res.status(401).send("Unauthorized");
+    return res.redirect("/sign-in");
   }
   next();
 }
+
+// Example of a protected route
+app.get("/protected", requireLogin, (req, res) => {
+  res.send("This is a protected route. Only logged in users can see this.");
+});
 
 // Start server
 app.listen(port, () => {
