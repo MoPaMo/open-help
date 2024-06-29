@@ -4,6 +4,7 @@ const express = require("express");
 const crypto = require("crypto");
 const Handlebars = require("handlebars");
 const fs = require("fs");
+const nodemailer = require("nodemailer");
 const app = express();
 const port = 3000;
 function generateRandomString(length) {
@@ -17,6 +18,10 @@ app.use(express.static("public"));
 const webpwd = generateRandomString(16);
 const template = fs.readFileSync(__dirname + "/setup/template.html", "utf8");
 const renderedTemplate = Handlebars.compile(template);
+Handlebars.registerHelper("ifEquals", function (arg1, arg2, options) {
+  return arg1 == arg2 ? options.fn(this) : options.inverse(this);
+});
+
 app.get("/:pwd/", (req, res) => {
   if (req.params.pwd == webpwd) {
     //send setup/start.html
@@ -92,6 +97,21 @@ app.get("/:pwd/step2", (req, res) => {
   }
 });
 
+app.get("/:pwd/step3", (req, res) => {
+  if (req.params.pwd == webpwd) {
+    res.send(
+      renderedTemplate({
+        Title: "Email Setup",
+        Context: "email",
+        next: "finish",
+        pwd: webpwd,
+      })
+    );
+  } else {
+    //error code
+    res.status(401).send("Unauthorized");
+  }
+});
 app.get("/:pwd/finish", (req, res) => {
   if (req.params.pwd == webpwd) {
     //send setup/start.html
