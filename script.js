@@ -67,7 +67,7 @@ app.post("/login", (req, res) => {
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.status(500).send("Internal Server Error");
-    res.send("Logout successful");
+    res.redirect("/sign-in#logout");
   });
 });
 

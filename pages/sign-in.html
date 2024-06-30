@@ -27,6 +27,11 @@
       href="/assets/css/material-dashboard.css?v=3.1.0"
       rel="stylesheet"
     />
+    <!-- Bootstrap CSS for toast -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
 
   <body class="bg-gray-200">
@@ -156,11 +161,46 @@
         </div>
       </div>
     </div>
-    <script></script>
+
+    <!-- Toast Notification -->
+    <div
+      class="toast position-fixed bottom-0 end-0 p-3"
+      style="z-index: 11"
+      id="logoutToast"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+    >
+      <div class="toast-header">
+        <strong class="me-auto">Notification</strong>
+        <button
+          type="button"
+          class="ml-2 mb-1 close"
+          data-bs-dismiss="toast"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="toast-body">You have been logged out successfully.</div>
+    </div>
+
     <script src="../assets/js/core/popper.min.js"></script>
     <script src="../assets/js/core/bootstrap.min.js"></script>
     <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
     <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
     <script src="../assets/js/material-dashboard.min.js?v=3.1.0"></script>
+    <!-- Bootstrap JS for toast -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        if (window.location.hash === "#logout") {
+          var toastEl = document.getElementById("logoutToast");
+          var toast = new bootstrap.Toast(toastEl);
+          toast.show();
+        }
+      });
+    </script>
   </body>
 </html>
