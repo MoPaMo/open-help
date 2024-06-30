@@ -95,16 +95,17 @@ app.get("/:pwd/step2", authMiddleware, (req, res) => {
 
   db.serialize(() => {
     db.run(
-      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)",
+      "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT, name TEXT, sign_in_date TEXT)",
       (err) => {
         if (err) {
           return res.status(500).send("Error creating table.");
         }
       }
     );
+
     db.run(
-      "INSERT INTO users (username, password) VALUES (?, ?)",
-      ["admin", hashedPwd],
+      "INSERT INTO users (username, password, name, sign_in_date) VALUES (?, ?, ?, ?)",
+      ["admin", hashedPwd, "Admin User", new Date().toISOString()],
       (err) => {
         if (err) {
           return res.status(500).send("Error inserting admin user.");

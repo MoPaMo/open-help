@@ -72,14 +72,15 @@ app.get("/register-user", requireLogin, (req, res) => {
   res.sendFile(path.join(__dirname, "pages", "register-user.html"));
 });
 app.post("/sign-up", requireLogin, (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, name } = req.body;
+
   // Basic input validation
-  if (!username || !password) {
+  if (!username || !password || !name) {
     return res.status(400).send("All fields are required");
   }
 
   // Check if user already exists
-  db.get("SELECT * FROM users WHERE username = ? ", [username], (err, user) => {
+  db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
     if (err) return res.status(500).send("Internal Server Error");
     if (user) return res.status(400).send("Username already exists");
 
@@ -87,10 +88,12 @@ app.post("/sign-up", requireLogin, (req, res) => {
     bcrypt.hash(password, 10, (err, hashedPassword) => {
       if (err) return res.status(500).send("Internal Server Error");
 
+      const signInDate = new Date().toISOString();
+
       // Insert new user into the database
       db.run(
-        "INSERT INTO users (username, password) VALUES (?, ?)",
-        [username, hashedPassword],
+        "INSERT INTO users (username, password, name, sign_in_date) VALUES (?, ?, ?, ?)",
+        [username, hashedPassword, name, signInDate],
         (err) => {
           if (err) return res.status(500).send("Internal Server Error");
 
