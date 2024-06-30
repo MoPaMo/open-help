@@ -71,6 +71,10 @@ app.get("/logout", (req, res) => {
   });
 });
 
+app.get("/template", (req, res) => {
+  res.sendFile(path.join(__dirname, "pages", "template.html"));
+});
+
 // Middleware to require login
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
