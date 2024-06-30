@@ -49,7 +49,6 @@ app.post("/login", (req, res) => {
   const { username, password } = req.body;
   db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
     if (err) return res.status(500).send("Internal Server Error");
-    console.log(user);
     if (!user) return res.status(400).send("Invalid username or password");
 
     bcrypt.compare(password, user.password, (err, result) => {
