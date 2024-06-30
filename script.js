@@ -64,6 +64,46 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.post("/sign-up", (req, res) => {
+  const { username, password } = req.body;
+
+  // Basic input validation
+  if (!username || !password) {
+    return res.status(400).send("All fields are required");
+  }
+
+  // Check if user already exists
+  db.get("SELECT * FROM users WHERE username = ? ", [username], (err, user) => {
+    if (err) return res.status(500).send("Internal Server Error");
+    if (user) return res.status(400).send("Username already exists");
+
+    // Hash the password
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+      if (err) return res.status(500).send("Internal Server Error");
+
+      // Insert new user into the database
+      db.run(
+        "INSERT INTO users (username, password) VALUES (?, ?)",
+        [username, hashedPassword],
+        (err) => {
+          if (err) return res.status(500).send("Internal Server Error");
+
+          // Automatically log in the new user
+          db.get(
+            "SELECT id FROM users WHERE username = ?",
+            [username],
+            (err, user) => {
+              if (err) return res.status(500).send("Internal Server Error");
+              req.session.userId = user.id;
+              res.redirect("/");
+            }
+          );
+        }
+      );
+    });
+  });
+});
+
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.status(500).send("Internal Server Error");
