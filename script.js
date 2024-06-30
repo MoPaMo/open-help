@@ -37,7 +37,7 @@ app.use(
 
 // Routes
 app.get("/", requireLogin, (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "/pages", "dashboard.html"));
 });
 
 // Add a route to serve the sign-in page
