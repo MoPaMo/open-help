@@ -63,7 +63,9 @@ app.post("/login", (req, res) => {
     });
   });
 });
-
+app.get("/register-user", requireLogin, (req, res) => {
+  res.sendFile(path.join(__dirname, "pages", "register-user.html"));
+});
 app.post("/sign-up", requireLogin, (req, res) => {
   const { username, password } = req.body;
   // Basic input validation
