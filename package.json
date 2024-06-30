@@ -2,10 +2,10 @@
   "name": "openhelp",
   "version": "1.0.0",
   "description": "An open-source support platform with AI integrations",
-  "main": "index.js",
+  "main": "script.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js dev",
+    "start": "node script.js",
+    "dev": "node script.js dev",
     "setup": "node setup.js"
   },
   "dependencies": {
