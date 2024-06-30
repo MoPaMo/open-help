@@ -6,6 +6,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const dotenv = require("dotenv").config();
 const helmet = require("helmet");
+const Handlebars = require("handlebars");
+const fs = require("fs");
 const app = express();
 if (!process.argv.includes("dev")) {
   app.use(helmet());
@@ -13,6 +15,10 @@ if (!process.argv.includes("dev")) {
 
 const port = 3000;
 
+//load template
+const userList = Handlebars.compile(
+  fs.readFileSync(path.join(__dirname, "pages", "users.html"), "utf8")
+);
 // Database setup
 let db;
 try {
@@ -108,6 +114,15 @@ app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.status(500).send("Internal Server Error");
     res.redirect("/sign-in#logout");
+  });
+});
+
+app.get("/users", requireLogin, (req, res) => {
+  //select all users, render template
+  db.all("SELECT * FROM users", (err, users) => {
+    if (err) return res.status(500).send("Internal Server Error");
+    //use handlebars to render template
+    res.send(userList({ users }));
   });
 });
 
