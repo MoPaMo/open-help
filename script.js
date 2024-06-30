@@ -64,9 +64,8 @@ app.post("/login", (req, res) => {
   });
 });
 
-app.post("/sign-up", (req, res) => {
+app.post("/sign-up", requireLogin, (req, res) => {
   const { username, password } = req.body;
-
   // Basic input validation
   if (!username || !password) {
     return res.status(400).send("All fields are required");
