@@ -209,6 +209,21 @@ app.post("/:pwd/step4", authMiddleware, (req, res) => {
     try {
       fs.writeFileSync("./config.json", JSON.stringify(emailConfig, null, 2));
       console.log("Email configuration saved.");
+      // send email for test
+      let transporter = nodemailer.createTransport({
+        host: sendHost,
+        port: sendPort,
+        auth: {
+          user: sendUser,
+          pass: sendPassword,
+        },
+      });
+      transporter.sendMail({
+        from: sendUser,
+        to: process.env.testemail,
+        subject: "Test email",
+        text: "This is a test email.",
+      });
       res.send(
         renderedTemplate({
           Title: "Email Setup Complete",
