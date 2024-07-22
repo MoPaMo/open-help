@@ -12,8 +12,13 @@ const app = express();
 if (!process.argv.includes("dev")) {
   app.use(helmet());
 }
+const { OpenAI } = require("openai");
+const Imap = require("imap");
+const simpleParser = require("mailparser").simpleParser;
+const config = JSON.parse(fs.readFileSync("config.json", "utf8"));
 
 const port = 3000;
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 //load template
 const userList = Handlebars.compile(
@@ -146,6 +151,95 @@ function requireLogin(req, res, next) {
 app.get("/protected", requireLogin, (req, res) => {
   res.send("This is a protected route. Only logged in users can see this.");
 });
+
+const transporter = nodemailer.createTransport({
+  host: config.send.host,
+  port: config.send.port,
+  auth: {
+    user: config.send.user,
+    pass: config.send.password,
+  },
+});
+
+// Set up IMAP for receiving emails
+const imapConfig = {
+  user: config.receive.user,
+  password: config.receive.password,
+  host: config.receive.host,
+  port: config.receive.port,
+  tls: true,
+};
+
+// Function to process incoming emails
+async function processEmail(email) {
+  const prompt = `Email: ${email.subject}\n\n${email.text}\n\nResponse:`;
+
+  const response = await openai.chat.completions.create({
+    model: "gpt-4", // Replace with your desired model
+    messages: [
+      {
+        role: "system",
+        content: "You are a helpful assistant that responds to emails.",
+      },
+      { role: "user", content: prompt },
+    ],
+    max_tokens: 150,
+  });
+
+  await transporter.sendMail({
+    from: config.send.user,
+    to: email.from.text,
+    subject: `Re: ${email.subject}`,
+    text: response.choices[0].message.content.trim(),
+  });
+
+  db.run("INSERT INTO interactions (email, response) VALUES (?, ?)", [
+    email.text,
+    response.choices[0].message.content,
+  ]);
+}
+
+// Function to check emails
+function checkEmails() {
+  const imap = new Imap(imapConfig);
+
+  imap.once("ready", () => {
+    imap.openBox("INBOX", false, (err, box) => {
+      if (err) throw err;
+      const f = imap.seq.fetch("1:*", {
+        bodies: ["HEADER", "TEXT"],
+        markSeen: true,
+      });
+      f.on("message", (msg) => {
+        msg.on("body", (stream) => {
+          simpleParser(stream, async (err, parsed) => {
+            if (err) console.error(err);
+            else await processEmail(parsed);
+          });
+        });
+      });
+      f.once("error", (err) => {
+        console.error("Fetch error: " + err);
+      });
+      f.once("end", () => {
+        console.log("Done fetching all messages!");
+        imap.end();
+      });
+    });
+  });
+
+  imap.once("error", (err) => {
+    console.error("IMAP error: " + err);
+  });
+
+  imap.once("end", () => {
+    console.log("IMAP connection ended");
+  });
+
+  imap.connect();
+}
+
+setInterval(checkEmails, 5 * 60 * 1000);
 
 // Start server
 app.listen(port, () => {
