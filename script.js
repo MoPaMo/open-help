@@ -55,11 +55,11 @@ app.post("/login", (req, res) => {
   const { username, password } = req.body;
   db.get("SELECT * FROM users WHERE username = ?", [username], (err, user) => {
     if (err) return res.status(500).send("Internal Server Error");
-    if (!user) return res.status(400).send("Invalid username or password");
+    if (!user) return res.redirect("/sign-in#error");
 
     bcrypt.compare(password, user.password, (err, result) => {
       if (err) return res.status(500).send("Internal Server Error");
-      if (!result) return res.status(400).send("Invalid username or password");
+      if (!result) return res.redirect("/sign-in#error");
 
       req.session.userId = user.id;
       const redirectTo = req.session.returnTo || "/";
